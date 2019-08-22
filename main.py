@@ -17,7 +17,7 @@ sleep(5)
 with open('kkk.csv', 'w') as f:
     writer = csv.writer(f, lineterminator='\n')
 
-    for b in range(2,2100):
+    for b in range(1530,2100):
         b = str(b)
 
         tmp = "/html/body/table[3]/tbody/tr/td/table/tbody/tr[" + b + "]/td[1]"
@@ -72,6 +72,18 @@ with open('kkk.csv', 'w') as f:
         write.append(text2)
         write.append(message)
         write.append(learning)
+
+        for a in range(2,15):
+            try:
+                no = str(a)
+                plan = driver.find_element_by_xpath("/html/body/table[2]/tbody/tr/td/table/tbody/tr[11]/td[2]/table/tbody/tr[" + no +"]/td[2]").text.replace(' ', '')
+                print(plan)
+            except:
+                plan = ""
+            
+            write.append(plan)
+            
+
         print(write)
         print(b)
 
