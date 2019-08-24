@@ -5,28 +5,34 @@ from time import sleep
 import csv
 
 options = Options()
-#options.add_argument('--headless')
+# options.add_argument('--headless')
 driver = webdriver.Chrome(chrome_options=options)
-url = 'http://syllabus.center.wakayama-u.ac.jp/ext_syllabus/syllabusSearchDirect.do?nologin=on'
-driver.get(url)
-sleep(5)
 
-driver.find_element_by_xpath("/html/body/form/table[3]/tbody/tr/td[2]/img[1]").click()
-sleep(5)
+def Scraping(v):
+    url = 'http://syllabus.center.wakayama-u.ac.jp/ext_syllabus/syllabusSearchDirect.do?nologin=on'
+    driver.get(url)
+    sleep(5)
+    driver.find_element_by_xpath("/html/body/form/table[3]/tbody/tr/td[2]/img[1]").click()
+    sleep(5)
 
-with open('kkk.csv', 'w') as f:
-    writer = csv.writer(f, lineterminator='\n')
+    if v == 0:
+        Scrapingmain(2,10)
 
-    for b in range(1905,2100):
-        b = str(b)
+    driver.quit()
 
-        tmp = "/html/body/table[3]/tbody/tr/td/table/tbody/tr[" + b + "]/td[1]"
+def Scrapingmain(a,b):
+    for num in range(a,b):
+        num = str(num)
+
+        tmp = "/html/body/table[3]/tbody/tr/td/table/tbody/tr[" + num + "]/td[1]"
         major = driver.find_element_by_xpath(tmp).text.replace('シラバス', '').replace('　', '').replace('年度', '')
         major = major[4:]
+        # print(major)
 
-        botton = "/html/body/table[3]/tbody/tr/td/table/tbody/tr[" + b + "]/td[5]/a/img"
+        botton = "/html/body/table[3]/tbody/tr/td/table/tbody/tr[" + num + "]/td[5]/a/img"
         driver.find_element_by_xpath(botton).click()
         sleep(5)
+
         write = []
 
         title = driver.find_element_by_xpath("/html/body/table[2]/tbody/tr/td/table/tbody/tr[1]/td[2]").text.replace(' ', '')
@@ -43,35 +49,20 @@ with open('kkk.csv', 'w') as f:
         text2 = driver.find_element_by_xpath("/html/body/table[2]/tbody/tr/td/table/tbody/tr[15]/td[2]").text.replace(' ', '')
         message = driver.find_element_by_xpath("/html/body/table[2]/tbody/tr/td/table/tbody/tr[16]/td[2]").text.replace(' ', '')
         learning = driver.find_element_by_xpath("/html/body/table[2]/tbody/tr/td/table/tbody/tr[19]/td[2]").text.replace(' ', '')
-        # print(title)
-        # print(teacher)
-        # print(target)
-        # print(day)
-        # print(term)
-        # print(kubun)
-        # print(kazu)
-        # print(overview)
-        # print(goal)
-        # print(evaluation)
-        # print(text)
-        # print(text2)
-        # print(message)
-        # print(learning)
-        write.append(major)
-        write.append(title)
-        write.append(teacher)
-        write.append(target)
-        write.append(day)
-        write.append(term)
-        write.append(kubun)
-        write.append(kazu)
-        write.append(overview)
-        write.append(goal)
-        write.append(evaluation)
-        write.append(text)
-        write.append(text2)
-        write.append(message)
-        write.append(learning)
+        print(title)
+        print(teacher)
+        print(target)
+        print(day)
+        print(term)
+        print(kubun)
+        print(kazu)
+        print(overview)
+        print(goal)
+        print(evaluation)
+        print(text)
+        print(text2)
+        print(message)
+        print(learning)
 
         for a in range(2,15):
             try:
@@ -81,28 +72,14 @@ with open('kkk.csv', 'w') as f:
             except:
                 plan = ""
             
-            write.append(plan)
-            
+            # write.append(plan)
 
-        print(write)
-        print(b)
-
-        writer.writerow(write)
-
-
-
-
-
-
-        #↓戻るボタン押す
         driver.find_element_by_xpath("/html/body/form[1]/table/tbody/tr/td/input").click()
         sleep(5)
 
 
-f.close()
-driver.quit()
 
-# /html/body/table[3]/tbody/tr/td/table/tbody/tr[2]/td[5]/a/img
-# /html/body/table[3]/tbody/tr/td/table/tbody/tr[2]/td[5]/a
-# /html/body/form[1]/table/tbody/tr/td/input
-# /html/body/table[3]/tbody/tr/td/table/tbody/tr[3]/td[5]/a/img
+    # driver.quit()
+
+if __name__ == "__main__":
+    Scraping(0)
